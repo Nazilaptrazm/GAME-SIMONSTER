@@ -1,0 +1,281 @@
+#include <iostream> 
+#include <conio.h> 
+#include <time.h> 
+#include <stdlib.h> 
+using namespace std;
+
+#define tombolAtas 72
+#define tombolBawah 80
+#define tombolKiri 75
+#define tombolKanan 77
+
+void garis()
+{
+	cout << "	=====================================================\n";
+}
+
+void header()
+{
+	garis();
+	cout << "		=== WELCOME TO THE WORLD ===\n";
+	cout << "		--   GAME SIMONSTER --\n";
+	cout << "			 by Nazila\n";
+	garis();
+	cout << endl;
+}
+
+
+struct Mahasiswa {
+	string nama;
+	string nim;
+	string kelas;
+}mahasiswa;
+
+
+int main()
+{
+	int panjangPeta = 15; // x
+	int lebarPeta = 15;	// y
+	system ("color f0");
+	
+	//Struct 
+	mahasiswa.nama = "Nazila Putri Azmi";
+	mahasiswa.nim = "1217050111";
+	mahasiswa.kelas = "Praktikum Alpro G";
+
+
+	//pointer 
+	char *arah[5];	// diberi 5 ruang karena ada 5 keterangan (kiri,kanan,atas,bawah,selesai)
+	*arah = "MULAI!!";
+	int monster = 0;
+	int menang = 0;
+	int exp = 0;
+	int expPemain = 3;
+	
+	
+	
+	//Matriks
+	string peta[lebarPeta][panjangPeta] = {
+			{"=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "="},
+			{"=", "%", " ", " ", " ", " ", "x", " ", " ", " ", "x", " ", " ", " ", "="},
+			{"=", "*", "x", " ", " ", " ", " ", "x", " ", " ", " ", " ", "0", "x", "="},
+			{"=", " ", " ", "x", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "="},
+			{"=", " ", " ", " ", " ", "=", "=", "=", " ", "=", " ", " ", " ", " ", "="},
+			{"=", " ", "%", " ", " ", "=", " ", "=", " ", "=", " ", " ", " ", " ", "="},
+			{"=", " ", " ", " ", " ", "=", " ", "=", " ", "=", " ", " ", " ", " ", "="},
+			{"=", " ", " ", " ", " ", "=", " ", "=", " ", "=", " ", "%", " ", "*", "="},
+			{"=", " ", " ", " ", " ", "=", " ", "=", " ", "=", " ", " ", " ", " ", "="},
+			{"=", "x", "0", " ", " ", "=", " ", "=", " ", "=", " ", " ", " ", " ", "="},
+			{"=", " ", " ", " ", " ", "=", " ", "=", "=", "=", " ", " ", " ", "%", "="},
+			{"=", "*", " ", " ", "%", " ", " ", " ", " ","x", " ", " ", "x", "x", "="},
+			{"=", "x", "x", " ", " ", " ", " ", " ", "x", " ", "0", "x", " ", "%", "="},
+			{"=", " ", "%", " ", "0", " ", "x", "%", " ", " ", "x", "%", " ", " ", "="},
+			{"=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "="},
+	};
+
+
+	// Elemen Game
+	/*	"=" adalah tembok (tidak bisa dilewati)
+		" " adalah jalan (bisa dilewati)
+		"*" adalah menambah nyawa
+		"0" adalah memilih pilihan nyerah atau lawan
+		"%" adalah exp bertambah
+		"x" adalah mengurangi nyawa
+
+	//Aturan Main
+	1. jalankan monster untuk memakan santapannya agar exp bertambah
+	2. jalankan monster untuk mencari nyawanya agar nyawa monster bertambah
+	3. nyawa mosnter akan berkurang jika menginjak "x"
+	4. exp monster akan bertmabh ketika menginjak "%"
+	5. nyawa monster akan bertambah ketika menginjak "*"
+	6. permainan akan dinyatakan menang ketika exp lebih dari 3
+	7. permainan akan kalah jika sudah tidak ada nyawa
+	*/
+
+	int posisiKarakterY, posisiKarakterX;
+
+	int tombolMasuk = 0;
+
+	posisiKarakterY = 2;
+	posisiKarakterX = 6;
+
+
+	while (true)
+	{
+		  
+		
+		// tombol untuk menggerakkan
+		/*
+				tombolAtas    = 72
+				tombolKiri  = 75
+				tombolKanan = 77
+				tombolBawah  = 80
+				ESC (exit)     = 27 */
+		
+		//looping
+		system("cls");
+		header();
+		//Memunculkan Struct 
+		cout << "\t" << mahasiswa.nama << " == " << mahasiswa.nim << " == " << mahasiswa.kelas << "\n" << endl;
+		
+		for (int y = 0; y < lebarPeta; y++) {
+        	for (int x = 0; x < panjangPeta; x++) {
+
+	            if (posisiKarakterY == y && posisiKarakterX == x) {
+	                cout << *arah; // untuk awal pasti akan berbentuk tulisan mulai
+	                				// akan berubah, kodingan akan terus membaca dari atas sampai bawah
+	            }
+	            else{
+	                cout << peta[x][y] << " ";
+	            }
+        	}
+        	cout << "\n";
+    	}
+    	
+    	
+		
+		 
+		
+
+	tombol_input:
+		if (expPemain > 0 && exp >= 0) {
+			//Aturan menambah nya
+			if (peta[posisiKarakterX][posisiKarakterY] == "*"){
+				peta[posisiKarakterX][posisiKarakterY] = " ";
+				expPemain++;
+				
+			}
+			if (peta[posisiKarakterX][posisiKarakterY] == "0"){
+				peta[posisiKarakterX][posisiKarakterY] = " ";
+				int pilihan;
+				cout << "mau pasrah = nyawa -2 (1) apa nyerang [kalah = nyawa -3, menang = nyawa +1] (2) : ";
+				cin >> pilihan;
+				if (pilihan == 1) {
+					if (exp < 3) {
+						cout << "Anda Kalah dalam Pertarungan" << endl;
+						expPemain =	expPemain-2;
+					}
+
+				}
+				else if (pilihan == 2) {
+					if (exp < 3) {
+						expPemain = expPemain-3;
+					}
+					else {
+						menang++;
+						cout << "Anda Menang !!!" << endl;
+						expPemain = expPemain+1;
+					}
+				}	
+			}
+			monster = 0; // agar saat looping jumlah monster tidak bertambah dari pembacaan sebelumnya
+			for (int y = 0; y < lebarPeta; y++) {		// loop perhitungan jumlah monster
+	        	for (int x = 0; x < panjangPeta; x++) {
+	           		if (peta[x][y] == "0") {
+	            		monster++;
+					}
+	        	}
+
+    		}
+			monster = monster + menang; // agar monster tetap jumlahnya
+			
+			if (menang == monster) {	// kondisi menang saat banyak menang = banyak monster
+				system ("cls");
+				cout << "\n\n	=== Selamat Anda Menang dalam Permainan ===\n\n";
+				exit(0);
+			}
+			
+			if (peta[posisiKarakterX][posisiKarakterY] == "x"){
+				peta[posisiKarakterX][posisiKarakterY] = " ";
+				expPemain--;
+				exp--;
+			}
+			if (peta[posisiKarakterX][posisiKarakterY] == "%"){
+				peta[posisiKarakterX][posisiKarakterY] = " ";
+				exp++;
+				
+			}
+		}
+		else {
+			system ("cls");
+			cout << "\n\n	Anda Kalah, nyawa dan exp anda tidak memenuhi syarat\n\n";
+			exit(0);
+		}
+		
+		cout << "\nNyawa : " << expPemain << "	";
+		cout << "Jumlah Monster : " << monster << "	";
+		cout << "Jumlah Menang : " << menang << endl;
+		cout << "exp : " << exp << endl;
+		cout << "Posisi Karakter : (" << posisiKarakterX << "," << posisiKarakterY << ")" << endl;
+		
+		cout << "\nPress ARROW KEY to move or ESC to quit\n"
+				 << endl;
+		tombolMasuk = getch();
+		cout << "Insert key: ";
+		if (tombolMasuk == 75)
+		{
+			cout << "Up\n";
+		}
+		else if (tombolMasuk == 72)
+		{
+			cout << "Left\n";
+		}
+		else if (tombolMasuk == 77)
+		{
+			cout << "Right\n";
+		}
+		else if (tombolMasuk == 80)
+		{
+			cout << "Down\n";
+		}
+		else if (tombolMasuk == 27)
+		{
+			cout << "Exit\n";
+			break;
+		}
+		else
+		{
+			goto tombol_input;
+		}
+
+		// Aturan menggerakkan karakter ke atas
+		if ((tombolMasuk == 72) && (peta[posisiKarakterY - 1][posisiKarakterX] != "="))
+		{
+			// Gerakkan karakter ke atas
+			posisiKarakterY = posisiKarakterY - 1;
+			*arah = "$ ";
+		}
+
+		// Aturan menggerakkan karakter ke kanan
+		if ((tombolMasuk == 80) && (peta[posisiKarakterY + 1][posisiKarakterX] != "="))
+		{
+			// Gerakkan karakter ke kanan
+			posisiKarakterY = posisiKarakterY + 1;
+			*arah = "$ ";
+		}
+
+		// Aturan menggerakkan karakter ke kiri
+		if ((tombolMasuk == 75) && (peta[posisiKarakterY][posisiKarakterX - 1] != "="))
+		{
+			// Gerakkan karakter ke kiri
+			posisiKarakterX = posisiKarakterX - 1;
+			*arah = "$ ";
+		}
+
+		// Aturan menggerakkan karakter ke bawah
+		if ((tombolMasuk == 77) && (peta[posisiKarakterY][posisiKarakterX + 1] != "="))
+		{
+			// Gerakkan karakter ke bawah
+			posisiKarakterX = posisiKarakterX + 1;
+			*arah = "$ ";
+		}
+		if ((tombolMasuk == 27))
+		{
+			*arah = "Selesai";  
+			exit(0);
+		}
+		
+	
+
+}
+}
