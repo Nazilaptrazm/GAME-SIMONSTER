@@ -21,7 +21,7 @@ void header()
 	cout << "		--   GAME SIMONSTER --\n";
 	cout << "			 by Nazila\n";
 	garis();
-	cout << endl;
+
 }
 
 
@@ -57,11 +57,11 @@ int main()
 	//Matriks
 	string peta[lebarPeta][panjangPeta] = {
 			{"=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "=", "="},
-			{"=", "%", " ", " ", " ", " ", "x", " ", " ", " ", "x", " ", " ", " ", "="},
+			{"=", "%", " ", " ", " ", " ", "x", " ", "%", " ", "x", " ", " ", " ", "="},
 			{"=", "*", "x", " ", " ", " ", " ", "x", " ", " ", " ", " ", "0", "x", "="},
 			{"=", " ", " ", "x", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "="},
 			{"=", " ", " ", " ", " ", "=", "=", "=", " ", "=", " ", " ", " ", " ", "="},
-			{"=", " ", "%", " ", " ", "=", " ", "=", " ", "=", " ", " ", " ", " ", "="},
+			{"=", "%", "%", " ", " ", "=", " ", "=", " ", "=", " ", " ", " ", "%", "="},
 			{"=", " ", " ", " ", " ", "=", " ", "=", " ", "=", " ", " ", " ", " ", "="},
 			{"=", " ", " ", " ", " ", "=", " ", "=", " ", "=", " ", "%", " ", "*", "="},
 			{"=", " ", " ", " ", " ", "=", " ", "=", " ", "=", " ", " ", " ", " ", "="},
@@ -148,6 +148,7 @@ int main()
 			if (peta[posisiKarakterX][posisiKarakterY] == "0"){
 				peta[posisiKarakterX][posisiKarakterY] = " ";
 				int pilihan;
+				system ("cls");
 				cout << "mau pasrah = nyawa -2 (1) apa nyerang [kalah = nyawa -3, menang = nyawa +1] (2) : ";
 				cin >> pilihan;
 				if (pilihan == 1) {
@@ -163,8 +164,9 @@ int main()
 					}
 					else {
 						menang++;
-						cout << "Anda Menang !!!" << endl;
+						cout << "\n	Anda Menang Melawan Monster !!!" << endl;
 						expPemain = expPemain+1;
+						exp--;
 					}
 				}	
 			}
